@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="css/main.css">
+    <title>Budget Application</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 class="text-heading">Budget Application</h2>
+        <div class="budget-control">
+            <form class="budget-form">
+                <div class="budget-error"></div>
+                <div class="form-control">
+                    <input type="text" class="budget-form-input" placeholder="Enter you budget">
+                </div>
+                <input type="submit" value="Submit" class="btn btn-budget">
+            </form>
+
+            <div class="display-budget">
+                <div class="budget-info">
+                    <h3 class="heading budget-heading">Budget</h3>
+                    <p class="price">&#8358; <span class="budget-amount"></span></p>
+                </div>
+                <div class="expense-info">
+                    <h3 class="heading expense-heading">Expenses</h3>
+                    <p class="price">&#8358; <span class="expense-amount"></span></p>
+                </div>
+                <div class="balance-info">
+                    <h3 class="heading balance-heading">Balance</h3>
+                    <p class="price">&#8358; <span class="balance-amount"></span></p>
+                </div>
+            </div>
+
+            <form class="expense-form">
+                <p class="expense-error"></p>
+                <div class="form-control">
+                    <input type="text" class="expense-name" placeholder="Enter you Expense">
+                </div>
+                <div class="form-control">
+                    <input type="text" class="expense-form-input" placeholder="Enter your Expense amount">
+                </div>
+                <input type="submit" value="Submit" class="btn btn-expense">
+            </form>
+
+            <div class="table-output"></div>
+
+        </div>
+    </div>
+
+
+    <footer class="footer container">
+        <p class="footer-text">&copy; Copyright 2019, Budget Application by Emmanuel Tochukwu</p>
+    </footer>
+
+    <script src="script/app.js"></script>
+</body>
+
+</html>
