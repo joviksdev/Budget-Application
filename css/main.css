@@ -2,7 +2,7 @@
   --primary-color: rgb(18, 155, 209);
   --text-color: #222222;
   --secondary-color: rgb(7, 113, 155);
-  --box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  --box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -11,10 +11,26 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-size: 14px;
+  background-color: rgb(241, 240, 240);
   color: var(--text-color);
+}
+
+main {
+  flex: 1;
 }
 
 .container {
@@ -23,9 +39,34 @@ body {
   margin: 0 auto;
 }
 
-.text-heading {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+header {
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+header div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+
+header h2 {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+header a {
+  color: var(--secondary-color);
+  transition: all 600ms;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+header a:hover {
+  opacity: 0.8;
+  color: white;
+  background-color: var(--primary-color);
 }
 
 .budget-control {
@@ -35,6 +76,7 @@ body {
   grid-row-gap: 4rem;
   justify-content: center;
   align-items: center;
+  margin-top: 1.4rem;
 }
 
 .form-control {
@@ -56,6 +98,12 @@ input[type='text'] {
   background-color: var(--secondary-color);
   color: white;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.back {
+  display: inline-block;
+  margin: 0.4rem 0;
 }
 
 .btn:hover {
@@ -64,10 +112,12 @@ input[type='text'] {
 
 .display-budget {
   display: grid;
+  grid: 0.7rem;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
-  align-items: center;
-  grid: 0.7rem;
   padding: 0.7rem;
   border: 1px solid var(--primary-color);
   border-radius: 0.7rem;
@@ -114,6 +164,7 @@ td {
 .footer {
   margin-top: 2rem;
   text-align: center;
+  padding: 1rem;
 }
 
 .error {
@@ -127,11 +178,15 @@ td {
   background-color: green;
 }
 
-ul {
-  list-style: none;
+.about {
+  margin-top: 1rem;
 }
 
-@media screen and (max-width: 790px) {
+.about h3 {
+  color: var(--secondary-color);
+}
+
+@media screen and (max-width: 800px) {
   .budget-control {
     display: grid;
     grid-template-columns: 1fr;
