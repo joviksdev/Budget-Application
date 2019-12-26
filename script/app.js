@@ -22,8 +22,8 @@ class Budget {
       if (budget !== null) {
         localStorage.setItem('budget', JSON.stringify(budgetMoney));
       } else {
-        let budgetMoney = JSON.parse(localStorage.getItem('budget'));
-        budgetMoney = [parseInt(this.budgetInput)];
+        let budgetMoney = [];
+        budgetMoney = [parseInt(this.budgetInput.value)];
         localStorage.setItem('budget', JSON.stringify(budgetMoney));
       }
     }
