@@ -2,6 +2,7 @@ const domElement = identifier => document.querySelector(`${identifier}`);
 
 class Budget {
   constructor() {
+    //accses the DOM element
     this.budgetInput = domElement('.budget-form-input');
     this.expenseAmount = domElement('.expense-amount');
     this.budgetAmount = domElement('.budget-amount');
@@ -10,53 +11,69 @@ class Budget {
     this.expenseInput = domElement('.expense-form-input');
   }
 
+  //method to handle the submitted budget details
   submitBudget = e => {
     e.preventDefault();
-    const budgetInput = this.budgetInput.value;
+    const budgetMoney = [parseInt(this.budgetInput.value)];
 
-    if (validateBudget(budgetInput)) {
-      if (localStorage.getItem('budget') === null) {
-        let budgetMoney = [parseInt(budgetInput)];
+    const budget = JSON.parse(localStorage.getItem('budget'));
+
+    if (validateBudget(this.budgetInput.value)) {
+      if (budget !== null) {
         localStorage.setItem('budget', JSON.stringify(budgetMoney));
       } else {
         let budgetMoney = JSON.parse(localStorage.getItem('budget'));
-        budgetMoney = [parseInt(budgetInput)];
+        budgetMoney = [parseInt(this.budgetInput)];
         localStorage.setItem('budget', JSON.stringify(budgetMoney));
       }
     }
-    this.getBudget();
+    this.displayBudget();
     this.getBalance();
 
     this.budgetInput.value = '';
   };
 
+  /* Method to handle the submitted Expense details */
+
   submitExpense = e => {
     e.preventDefault();
 
-    let obj = {
+    //Object comprising of the expenses value
+    let expense_Store = {
       name: this.expenseName.value,
       value: this.expenseInput.value
     };
 
-    if (validateExpense(this.expenseName.value, this.expenseInput.value)) {
-      if (localStorage.getItem('expenses') === null) {
-        let expenses = [];
-        expenses.push(obj);
+    const expenses = this.getExpense();
+    /* validation check on the Expenses input value */
+    if (validateExpense(expense_Store.name, expense_Store.value)) {
+      if (expenses !== null) {
+        expenses.push(expense_Store);
         localStorage.setItem('expenses', JSON.stringify(expenses));
       } else {
-        let expenses = JSON.parse(localStorage.getItem('expenses'));
-        expenses.push(obj);
+        let expenses = [];
+        expenses.push(expense_Store);
         localStorage.setItem('expenses', JSON.stringify(expenses));
       }
     }
-    this.getExpense();
+    this.displayExpense();
     this.getBalance();
+
+    //reset the form after submittion
 
     domElement('.expense-form').reset();
   };
 
+  /* get the Expenses form local storage */
+
   getExpense() {
-    let expenses = JSON.parse(localStorage.getItem('expenses'));
+    const expenses = JSON.parse(localStorage.getItem('expenses'));
+    return expenses;
+  }
+
+  /* Display Expense onto the DOM */
+  displayExpense() {
+    const expenses = this.getExpense();
 
     if (expenses !== null) {
       let row = `
@@ -78,12 +95,15 @@ class Budget {
                 <td>${detail.name}</td>
                 <td>&#8358; ${detail.value}</td>
                 <td>
+                <div  class="btn-control">
                     <button class="btn btn-delete" onclick=deleteExpense('${expenses.indexOf(
                       detail
-                    )}')>Delete</button>
-                    <button class="btn btn-edit" onclick=editExpense('${expenses.indexOf(
+                    )})')>Delete</button>
+
+                    <button class="btn btn-edit" onclick = editExpense('${expenses.indexOf(
                       detail
-                    )}')>Edit</button>
+                    )})')>Edit</button>
+                  </div>
                 </td>
                 </tr>
           `;
@@ -106,17 +126,27 @@ class Budget {
     }
   }
 
+  //get buget from local storage
   getBudget() {
-    let budget = JSON.parse(localStorage.getItem('budget'));
+    const budget = JSON.parse(localStorage.getItem('budget'));
+    return budget;
+  }
+
+  //Display budget data to the DOM
+
+  displayBudget() {
+    const budget = this.getBudget();
     if (budget !== null) {
       this.budgetAmount.textContent = budget[0];
     }
   }
 
-  getBalance() {
-    let budget = JSON.parse(localStorage.getItem('budget'));
+  /* Calculate the balance and display to the DOM */
 
-    let expenses = JSON.parse(localStorage.getItem('expenses'));
+  getBalance() {
+    let budget = this.getBudget();
+
+    let expenses = this.getExpense();
     if (expenses !== null) {
       let total = expenses
         .map(expense => {
@@ -136,12 +166,14 @@ class Budget {
   }
 }
 
+/* As soon as the DOM loads, initialize the handle budget function */
+
 document.addEventListener('DOMContentLoaded', () => handleBudget());
+const budget = new Budget();
 
 function handleBudget() {
-  const budget = new Budget();
-  budget.getExpense();
-  budget.getBudget();
+  budget.displayExpense();
+  budget.displayBudget();
   budget.getBalance();
 
   domElement('.budget-form').addEventListener('submit', budget.submitBudget);
@@ -149,8 +181,9 @@ function handleBudget() {
   domElement('.expense-form').addEventListener('submit', budget.submitExpense);
 }
 
-const deleteExpense = index => {
-  const budget2 = new Budget();
+/* function to delete Expense form the DOM */
+
+function deleteExpense(index) {
   let expenses = JSON.parse(localStorage.getItem('expenses'));
 
   if (expenses !== null) {
@@ -164,14 +197,15 @@ const deleteExpense = index => {
     });
 
     localStorage.setItem('expenses', JSON.stringify(expenses));
-    budget2.getBalance();
-    budget2.getBudget();
-    budget2.getExpense();
+    budget.getBalance();
+    budget.displayBudget();
+    budget.displayExpense();
   }
-};
+}
+
+/* function to edit expense */
 
 const editExpense = index => {
-  const budget2 = new Budget();
   let expenses = JSON.parse(localStorage.getItem('expenses'));
 
   if (expenses !== null) {
@@ -185,12 +219,13 @@ const editExpense = index => {
     });
 
     localStorage.setItem('expenses', JSON.stringify(expenses));
-    budget2.getBalance();
-    budget2.getBudget();
-    budget2.getExpense();
+    budget.getBalance();
+    budget.getBudget();
+    budget.displayExpense();
   }
 };
 
+/* Function to validate form input */
 function validateBudget(budget) {
   if (budget === '' || budget < 0) {
     domElement(
@@ -205,7 +240,7 @@ function validateBudget(budget) {
   } else if (isNaN(budget)) {
     domElement(
       '.budget-error'
-    ).innerHTML = `<p class="error">Budget must be a number</p>`;
+    ).innerHTML = `<p class="error">*Budget must be a number</p>`;
 
     setTimeout(() => {
       domElement('.budget-error').innerHTML = '';

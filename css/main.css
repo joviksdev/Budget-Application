@@ -71,7 +71,7 @@ header a:hover {
 
 .budget-control {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   grid-gap: 2rem;
   grid-row-gap: 4rem;
   justify-content: center;
@@ -158,8 +158,27 @@ td {
   padding: 0.4rem;
   border-bottom: 1px solid var(--primary-color);
 }
-.btn-delete {
-  margin-right: 1rem;
+
+.btn-control {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 0.4rem;
+}
+
+.btn-control .btn {
+  padding: 0.2rem 0.7rem;
+  border: none;
+  background-color: var(--secondary-color);
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 12px;
+  outline: none;
+}
+
+.btn-control .btn:hover {
+  background-color: var(--primary-color);
 }
 
 .footer {
@@ -187,9 +206,13 @@ td {
   color: var(--secondary-color);
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 800px) {
   .budget-control {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-control {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
